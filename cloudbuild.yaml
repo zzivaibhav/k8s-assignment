@@ -50,28 +50,6 @@ steps:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-assignment'
 
-# Update the image for app1
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args: [
-      'set', 
-      'image', 
-      'deployment/container1-deployment', 
-      'us-central1-docker.pkg.dev/k8s-453603/micro-services/app1:$BUILD_ID'
-    ]
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-assignment'
-  
-  # Update the image for app2
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args: [
-      'set', 
-      'image', 
-      'deployment/container2-deployment', 
-      'us-central1-docker.pkg.dev/k8s-453603/micro-services/app2:$BUILD_ID'
-    ]
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-assignment'
+ 
 options:
   logging: CLOUD_LOGGING_ONLY
