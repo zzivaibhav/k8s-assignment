@@ -1,19 +1,19 @@
-# apiVersion: storage.k8s.io/v1
-# kind: StorageClass
-# metadata:
-#   name: assignment-storage-class
-# provisioner: pd.csi.storage.gke.io
-# volumeBindingMode: Immediate
-# reclaimPolicy: Retain 
-# parameters:
-#   type: pd-standard  
-
-
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: assignment-storage-class
- 
-provisioner: k8s.io/minikube-hostpath
+provisioner: pd.csi.storage.gke.io
 volumeBindingMode: Immediate
-reclaimPolicy: Delete
+reclaimPolicy: Retain 
+parameters:
+  type: pd-standard  
+
+
+# apiVersion: storage.k8s.io/v1
+# kind: StorageClass
+# metadata:
+#   name: assignment-storage-class
+ 
+# provisioner: k8s.io/minikube-hostpath
+# volumeBindingMode: Immediate
+# reclaimPolicy: Delete
