@@ -80,7 +80,7 @@ app.post('/calculate', (req, res) => {
         });
 });
 app.get('/', (req, res) => {
-    res.send('Welcome to the first container!');
+    res.send('Welcome to the first container! updated? yes');
 });
 // Start the server
 app.listen(PORT, () => {
