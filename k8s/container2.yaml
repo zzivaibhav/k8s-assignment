@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container2-deployment
+   
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micro-service-two
+  template:
+    metadata:
+      labels:
+        app: micro-service-two
+    spec:
+      containers:
+      - name: container2
+        #image: us-central1-docker.pkg.dev/k8s-assignment-453118/micro-services/app2:latest
+        image: vaibhav1476/app2:latest
+        env:
+        - name: PORT
+          value: "3001"
+        ports:
+        - containerPort: 3001
+        volumeMounts:
+        - mountPath: /app/files
+          name: container1-pod-volume
+      volumes:
+      - name: container1-pod-volume
+        persistentVolumeClaim:
+          claimName: assignment-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: container2-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 4001
+      targetPort: 3001
+      nodePort: 30006
+  selector:
+    app: micro-service-two
+  type: LoadBalancer  # Use ClusterIP for internal access

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container1-deployment
+   
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micro-service-one
+  template:
+    metadata:
+      labels:
+        app: micro-service-one
+    spec:
+      containers:
+      - name: container1
+        #image: us-central1-docker.pkg.dev/k8s-assignment-453118/micro-services/app1:latest
+        image: vaibhav1476/app1:latest
+        imagePullPolicy: Always
+        env:
+        - name: PORT
+          value: "3000"
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - mountPath: /app/files
+          name: container1-pod-volume
+      volumes:
+      - name: container1-pod-volume
+        persistentVolumeClaim:
+          claimName: assignment-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: container1-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 3000
+      nodePort: 30000
+       
+  selector:
+    app: micro-service-one
+  type: LoadBalancer
