@@ -56,7 +56,7 @@ steps:
       'set', 
       'image', 
       'deployment/app1', 
-      'app1=us-central1-docker.pkg.dev/k8s-453603/micro-services/app1:$BUILD_ID'
+      'app1=us-central1-docker.pkg.dev/k8s-453603/micro-services/container1-deployment:$BUILD_ID'
     ]
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
@@ -68,7 +68,7 @@ steps:
       'set', 
       'image', 
       'deployment/app2', 
-      'app2=us-central1-docker.pkg.dev/k8s-453603/micro-services/app2:$BUILD_ID'
+      'app2=us-central1-docker.pkg.dev/k8s-453603/micro-services/container2-deployment:$BUILD_ID'
     ]
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
