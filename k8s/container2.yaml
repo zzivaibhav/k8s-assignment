@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: container2
-        image: us-central1-docker.pkg.dev/k8s-assignment-453118/micro-services/app2:latest
+        image: us-central1-docker.pkg.dev/k8s-453603/micro-services/app2:latest
         #image: vaibhav1476/app2:latest
         env:
         - name: PORT
