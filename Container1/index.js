@@ -22,7 +22,7 @@ app.post("/store-file", (req, res) => {
     }
     
     // Make sure the files directory exists
-    const filesDir = path.join(__dirname, "files");
+    const filesDir = path.join(__dirname, "B01006432_PV_dir");
     if (!fs.existsSync(filesDir)) {
         fs.mkdirSync(filesDir, { recursive: true });
     }
@@ -56,7 +56,7 @@ app.post('/calculate', (req, res) => {
         });
     }
 
-    const filePath = path.join(__dirname, "files", file);
+    const filePath = path.join(__dirname, "B01006432_PV_dir", file);
 
     // Check if the file exists
     if (!fs.existsSync(filePath)) {

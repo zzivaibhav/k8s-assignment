@@ -19,7 +19,7 @@ app.post('/calculate-sum', express.json(), (req, res) => {
         });
     }
 
-    const filePath = path.join(__dirname, "files", file);
+    const filePath = path.join(__dirname, "B01006432_PV_dir", file);
 
     // Check if the file exists
     if (!fs.existsSync(filePath)) {
