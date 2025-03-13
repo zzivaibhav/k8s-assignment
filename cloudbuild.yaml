@@ -1,91 +1,59 @@
 steps:
-  # Step 1: Build Docker image
+  # Build and tag app1 with both latest and BUILD_ID
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/k8s-453603/micro-services/app1', './Container1/']
-
-  # Step 2: Push Docker image to Google Container Registry
+    args: [
+      'build', 
+      '-t', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:latest', 
+      '-t', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:$BUILD_ID', 
+      './Container1/'
+    ]
+  
+  # Push both tags for app1
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/k8s-453603/micro-services/app1:latest']
-# Step 1: Build Docker image
+    args: ['push', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:latest']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/k8s-453603/micro-services/app2', './Container2/']
-
-  # Step 2: Push Docker image to Google Container Registry
+    args: ['push', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:$BUILD_ID']
+  
+  # Build and tag app2 with both latest and BUILD_ID
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/k8s-453603/micro-services/app2:latest']
-
-  # Step 3: Configure kubectl with the GKE cluster
+    args: [
+      'build', 
+      '-t', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app2:latest', 
+      '-t', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app2:$BUILD_ID', 
+      './Container2/'
+    ]
+  
+  # Push both tags for app2
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app2:latest']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app2:$BUILD_ID']
+  
+  # Get GKE credentials
   - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'container'
-      - 'clusters'
-      - 'get-credentials'
-      - 'k8s-assignment'
-      - '--zone'
-      - 'us-central1-a'
-      - '--project'
-      - 'k8s-453603'
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-assignment'
-      - 'KUBECTL_VERSION=1.29'  # Specify a supported kubectl version
-
-
-
-  # Step 4: Apply the k8s deployment
-
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args:
-      - 'delete'
-      - '-f'
-      - 'k8s/container1.yaml'
-      - '--ignore-not-found=true'
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-assignment'
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args:
-      - 'delete'
-      - '-f'
-      - 'k8s/container2.yaml'
-      - '--ignore-not-found=true'
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-assignment'
-
-
-
-
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args:
-      - 'apply'
-      - '-f'
-      - 'k8s/'
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-assignment'
- 
-
+    args: [
+      'container',
+      'clusters',
+      'get-credentials',
+      'k8s-assignment',
+      '--zone',
+      'us-central1-a',
+      '--project',
+      'k8s-453603'
+    ]
   
-# # Step 5: Restart the deployment to ensure the new image is used
-#   - name: 'gcr.io/cloud-builders/kubectl'
-#     args:
-#       - 'rollout'
-#       - 'restart'
-#       - 'deployment/container1-deployment'   
-#     env:
-#       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-#       - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-assignment'
-
+  # Update deployment.yaml with the new image tags
+  - name: 'gcr.io/cloud-builders/sed'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        sed -i "s|us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:latest|us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:$BUILD_ID|g" k8s/deployment.yaml
+        sed -i "s|us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app2:latest|us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app2:$BUILD_ID|g" k8s/deployment.yaml
   
-# # Step 5: Restart the deployment to ensure the new image is used
-#   - name: 'gcr.io/cloud-builders/kubectl'
-#     args:
-#       - 'rollout'
-#       - 'restart'
-#       - 'deployment/container2-deployment'   
-#     env:
-#       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-#       - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-assignment'
-options:
-  logging: CLOUD_LOGGING_ONLY
+  # Apply Kubernetes manifests
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['apply', '-f', 'k8s/']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=k8s-assignment'
