@@ -67,7 +67,7 @@ app.post('/calculate', (req, res) => {
     }
 
     // Forward the request to the second container
-    axios.post('http://container2-service:4001/calculate-sum', { file, product })
+    axios.post('http://container2-service:30006/calculate-sum', { file, product })
     // axios.post('http://localhost:3001/calculate-sum', { file, product })
 
         .then(response => res.json(response.data))
