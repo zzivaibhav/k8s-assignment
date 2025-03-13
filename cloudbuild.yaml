@@ -39,7 +39,7 @@ steps:
       '--zone',
       'us-central1-a',
       '--project',
-      'k8s-453603'
+      'kubernetes-453613'
     ]
   
   # Update deployment.yaml with the new image tags
