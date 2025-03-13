@@ -9,7 +9,7 @@ WORKDIR /app
 # Copy package.json and install dependencies
 COPY package.json /app/package.json
 RUN npm install
-# RUN mkdir -p /app/files
+RUN mkdir -p /app/B01006432_PV_dir
 
 
 # Copy the rest of the application

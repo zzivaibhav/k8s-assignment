@@ -24,7 +24,7 @@ spec:
         ports:
         - containerPort: 3000
         volumeMounts:
-        - mountPath: /app/files
+        - mountPath: /app/B01006432_PV_dir
           name: container1-pod-volume
       volumes:
       - name: container1-pod-volume
