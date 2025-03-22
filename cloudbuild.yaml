@@ -7,7 +7,7 @@ steps:
       '-t', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:$BUILD_ID', 
       './Container1/'
     ]
-  
+  #test ci/cd
   # Push both tags for app1
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:latest']
