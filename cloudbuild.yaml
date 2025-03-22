@@ -3,31 +3,31 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build', 
-      '-t', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:latest', 
-      '-t', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:$BUILD_ID', 
+      '-t', 'us-central1-docker.pkg.dev/ k8s-assignment-454511/micro-services/app1:latest', 
+      '-t', 'us-central1-docker.pkg.dev/ k8s-assignment-454511/micro-services/app1:$BUILD_ID', 
       './Container1/'
     ]
   #test ci/cd
   # Push both tags for app1
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:latest']
+    args: ['push', 'us-central1-docker.pkg.dev/ k8s-assignment-454511/micro-services/app1:latest']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:$BUILD_ID']
+    args: ['push', 'us-central1-docker.pkg.dev/ k8s-assignment-454511/micro-services/app1:$BUILD_ID']
   
   # Build and tag app2 with both latest and BUILD_ID
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build', 
-      '-t', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app2:latest', 
-      '-t', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app2:$BUILD_ID', 
+      '-t', 'us-central1-docker.pkg.dev/ k8s-assignment-454511/micro-services/app2:latest', 
+      '-t', 'us-central1-docker.pkg.dev/ k8s-assignment-454511/micro-services/app2:$BUILD_ID', 
       './Container2/'
     ]
   
   # Push both tags for app2
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app2:latest']
+    args: ['push', 'us-central1-docker.pkg.dev/ k8s-assignment-454511/micro-services/app2:latest']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app2:$BUILD_ID']
+    args: ['push', 'us-central1-docker.pkg.dev/ k8s-assignment-454511/micro-services/app2:$BUILD_ID']
   
   # Get GKE credentials
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -39,7 +39,7 @@ steps:
       '--zone',
       'us-central1-a',
       '--project',
-      'kubernetes-453613'
+      ' k8s-assignment-454511'
     ]
   
  

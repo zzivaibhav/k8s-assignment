@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: container1
-        image: us-central1-docker.pkg.dev/kubernetes-453613/micro-services/app1:latest
+        image: us-central1-docker.pkg.dev/ k8s-assignment-454511/micro-services/app1:latest
         #image: vaibhav1476/app1:latest
         imagePullPolicy: Always
         env:
